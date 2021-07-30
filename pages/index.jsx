@@ -5,10 +5,11 @@ import SignIn from "components/SignIn";
 
 const Home = () => {
   const { user, logout } = useUser();
-  if (!user) {
-    return <SignIn />;
-  }
-  return <div></div>;
+  return (
+    <div>
+      <h1 className={"text-5xl font-bold text-primary-800"}>Sticky Notes</h1>
+    </div>
+  );
 };
 
 export default Home;

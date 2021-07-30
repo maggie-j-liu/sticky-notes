@@ -1,4 +1,5 @@
 import useUser from "utils/useUser";
+import Link from "next/link";
 
 const Navbar = () => {
   const { user, logout } = useUser();
@@ -7,7 +8,9 @@ const Navbar = () => {
       <div
         className={"h-full flex justify-between items-center max-w-6xl mx-auto"}
       >
-        <div className={"font-bold"}>Sticky Notes</div>
+        <Link href="/">
+          <a className={"font-bold"}>Sticky Notes</a>
+        </Link>
         <div>
           {user ? (
             <div className={"flex space-x-8"}>
@@ -15,7 +18,9 @@ const Navbar = () => {
               <button onClick={() => logout()}>Sign Out</button>
             </div>
           ) : (
-            <div>Sign In</div>
+            <Link href="/sign-in">
+              <a>Sign In</a>
+            </Link>
           )}
         </div>
       </div>
