@@ -7,6 +7,7 @@ const SignIn = () => {
   const router = useRouter();
   const uiConfig = {
     signInFlow: "popup",
+    signInSuccessUrl: "/",
     signInOptions: [
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       {
@@ -15,7 +16,13 @@ const SignIn = () => {
       },
     ],
     callbacks: {
-      signInSuccess: () => {
+      signInSuccessWithAuthResult: async ({ user, additionalUserInfo }) => {
+        if (additionalUserInfo.isNewUser) {
+          const db = firebase.firestore();
+          await db.collection("users").doc(user.uid).set({
+            walls: [],
+          });
+        }
         router.back();
       },
     },

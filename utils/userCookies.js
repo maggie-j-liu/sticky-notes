@@ -2,7 +2,6 @@ import cookies from "js-cookie";
 
 export const getUserFromCookie = () => {
   const cookie = cookies.get("auth");
-  console.log(cookie);
   if (!cookie) {
     return;
   }
