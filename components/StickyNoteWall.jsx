@@ -1,22 +1,20 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import firebase from "utils/firebase";
 import useUser from "utils/useUser";
+import AddMessageModal from "./AddMessageModal";
+import NotSignedIn from "./NotSignedIn";
 import StickyNoteGrid from "./StickyNoteGrid";
-const StickyNoteWall = ({ wallId }) => {
+const StickyNoteWall = ({ wallId, username }) => {
   const [messages, setMessages] = useState([]);
   const { user } = useUser();
-  const [addedMessage, setAddedMessage] = useState("");
-  const addMessage = async () => {
-    const db = firebase.firestore();
-    await db
-      .collection("walls")
-      .doc(wallId)
-      .update({
-        messages: firebase.firestore.FieldValue.arrayUnion({
-          user: user.uid,
-          message: addedMessage,
-        }),
-      });
+  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
   };
   useEffect(() => {
     const getData = async () => {
@@ -29,21 +27,25 @@ const StickyNoteWall = ({ wallId }) => {
       console.log(m);
       setMessages(m);
     };
-    if (wallId && user) {
+    if (wallId) {
       getData();
     }
-  }, [wallId, user]);
-  if (!user) {
-    return <div>Log in</div>;
-  }
+  }, [wallId]);
   return (
     <div>
-      <input
-        type="text"
-        value={addedMessage}
-        onChange={(e) => setAddedMessage(e.target.value)}
-      />
-      <button onClick={() => addMessage()}>Add message</button>
+      {user ? (
+        <>
+          <button onClick={openModal}>Add sticky note</button>
+          <AddMessageModal
+            isOpen={isOpen}
+            onClose={closeModal}
+            username={username}
+            wallId={wallId}
+          />
+        </>
+      ) : (
+        <NotSignedIn message={"to add a sticky note"} />
+      )}
       <StickyNoteGrid notes={messages} />
     </div>
   );

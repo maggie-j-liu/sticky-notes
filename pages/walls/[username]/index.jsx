@@ -1,3 +1,4 @@
+import Loading from "components/Loading";
 import StickyNoteWall from "components/StickyNoteWall";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -12,12 +13,12 @@ const UserPage = ({ username, userId, wallId, error }) => {
     }
   }, [error]);
   if (error || !username) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <div>
       <h1>{username}'s Sticky Note Wall</h1>
-      <StickyNoteWall wallId={wallId} />
+      <StickyNoteWall wallId={wallId} username={username} />
     </div>
   );
 };

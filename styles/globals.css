@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  @variants hover, focus {
+    .wavy {
+      text-decoration-style: wavy !important;
+      text-decoration: underline;
+    }
+  }
+}
