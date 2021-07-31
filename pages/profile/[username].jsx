@@ -40,6 +40,7 @@ const ProfilePage = ({ error, userId }) => {
       <div className={"flex flex-col items-center justify-center mt-8"}>
         <Image
           src={userInfo.photoURL}
+          alt={`${userInfo.displayName}'s profile picture`}
           width={256}
           height={256}
           className={"rounded-full"}
