@@ -121,6 +121,7 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
                     <div className={"flex flex-wrap gap-4 mt-4"}>
                       {backgroundColors.map((color, idx) => (
                         <RadioGroup.Option
+                          key={color}
                           value={idx}
                           className={"focus-visible:outline-none"}
                         >
