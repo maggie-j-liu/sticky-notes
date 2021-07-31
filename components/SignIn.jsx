@@ -17,8 +17,8 @@ const SignIn = () => {
     callbacks: {
       signInSuccessWithAuthResult: ({ user, additionalUserInfo }) => {
         const processUser = async () => {
-          //console.log(user);
-          //console.log(additionalUserInfo);
+          console.log(user);
+          console.log(additionalUserInfo);
           if (additionalUserInfo.isNewUser) {
             const db = firebase.firestore();
             const id = await db
@@ -27,6 +27,11 @@ const SignIn = () => {
                 messages: [],
               })
               .then((doc) => doc.id);
+            if (!user.photoURL) {
+              await user.updateProfile({
+                photoURL: `https://robohash.org/${user.uid}?set=set4`,
+              });
+            }
             await db
               .collection("users")
               .doc(user.uid)

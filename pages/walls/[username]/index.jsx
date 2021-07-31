@@ -2,7 +2,7 @@ import Loading from "components/Loading";
 import StickyNoteWall from "components/StickyNoteWall";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import firebase from "utils/firebase";
+import userExists from "utils/userExists";
 
 const UserPage = ({ username, userId, wallId, error }) => {
   const router = useRouter();
@@ -36,27 +36,11 @@ export const getStaticPaths = () => ({
 });
 
 export const getStaticProps = async ({ params }) => {
-  const db = firebase.firestore();
   const {
-    good: inRegisteredUsers,
+    exists: inRegisteredUsers,
     userId,
-    wallId,
-  } = await db
-    .collection("users")
-    .get()
-    .then((snapshot) => {
-      let good = false;
-      let userId, wallId;
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        if (params.username === data.username) {
-          good = true;
-          userId = doc.id;
-          wallId = data.walls[0];
-        }
-      });
-      return { good, userId, wallId };
-    });
+    userData,
+  } = await userExists(params.username);
   if (!inRegisteredUsers) {
     return {
       props: {
@@ -69,7 +53,7 @@ export const getStaticProps = async ({ params }) => {
     props: {
       username: params.username,
       userId,
-      wallId,
+      wallId: userData.walls[0],
       error: false,
     },
     revalidate: 10,

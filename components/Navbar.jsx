@@ -14,7 +14,9 @@ const Navbar = () => {
         <div>
           {user ? (
             <div className={"flex space-x-8"}>
-              <div>{user.displayName}</div>
+              <Link href={`/profile/${user.displayName}`}>
+                <a>{user.displayName}</a>
+              </Link>
               <button onClick={() => logout()}>Sign Out</button>
             </div>
           ) : (
