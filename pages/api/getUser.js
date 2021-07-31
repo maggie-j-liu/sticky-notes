@@ -14,6 +14,8 @@ const handler = async (req, res) => {
     })
     .catch((error) => {
       console.log("Error fetching user data:", error);
+      res.status(400).json(error);
+      return;
     });
   const filteredInfo = {};
   for (const field of fields) {

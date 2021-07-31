@@ -53,7 +53,7 @@ const ProfilePage = ({ error, userId }) => {
             "my-6 gradient-button text-white text-xl font-bold px-8 py-5 rounded-lg"
           }
         >
-          View Maggie's ✨Sticky Note Wall✨
+          View {userInfo.displayName}'s ✨Sticky Note Wall✨
         </button>
         {user && user.uid === userId && (
           <Link href={`/profile/${user.displayName}`}>
@@ -80,7 +80,7 @@ export const getStaticProps = async ({ params }) => {
       props: {
         error: true,
       },
-      revalidate: 10,
+      revalidate: 1,
     };
   }
   return {
@@ -88,7 +88,7 @@ export const getStaticProps = async ({ params }) => {
       error: false,
       userId,
     },
-    revalidate: 10,
+    revalidate: 1,
   };
 };
 
