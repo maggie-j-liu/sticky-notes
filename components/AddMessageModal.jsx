@@ -8,7 +8,6 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
   const { user } = useUser();
   const router = useRouter();
   const addMessage = async () => {
-    console.log(addedMessage);
     const db = firebase.firestore();
     await db
       .collection("walls")

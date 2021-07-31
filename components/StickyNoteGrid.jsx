@@ -1,6 +1,5 @@
 import StickyNote from "./StickyNote";
 const StickyNoteGrid = ({ notes = [] }) => {
-  console.log("notes", notes);
   const sorted = [...notes].sort((a, b) => b.timestamp - a.timestamp);
   return (
     <div

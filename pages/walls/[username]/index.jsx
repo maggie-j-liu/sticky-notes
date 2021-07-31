@@ -7,7 +7,6 @@ import firebase from "utils/firebase";
 const UserPage = ({ username, userId, wallId, error }) => {
   const router = useRouter();
   useEffect(() => {
-    console.log(error);
     if (error) {
       router.replace("/404");
     }

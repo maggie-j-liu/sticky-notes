@@ -24,7 +24,6 @@ const StickyNoteWall = ({ wallId, username }) => {
         .doc(wallId)
         .get()
         .then((doc) => doc.data().messages);
-      console.log(m);
       setMessages(m);
     };
     if (wallId) {
