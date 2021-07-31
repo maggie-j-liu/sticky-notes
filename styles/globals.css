@@ -17,4 +17,7 @@
   .focus-ring {
     @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500;
   }
+  .gradient-button {
+    @apply bg-gradient-to-br from-indigo-600 via-purple-500 to-pink-400 hover:scale-110 duration-200 hover:shadow-xl;
+  }
 }

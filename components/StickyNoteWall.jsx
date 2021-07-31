@@ -37,7 +37,7 @@ const StickyNoteWall = ({ wallId, username }) => {
           <button
             onClick={openModal}
             className={
-              "mt-10 mb-2 rounded-md px-6 py-4 bg-gradient-to-br from-indigo-600 via-purple-500 to-pink-400 text-white text-lg font-bold hover:scale-110 duration-200 hover:shadow-xl"
+              "gradient-button mt-10 mb-2 rounded-md px-6 py-4 text-white text-lg font-bold"
             }
           >
             Add sticky note
