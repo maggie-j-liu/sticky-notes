@@ -6,16 +6,12 @@ import Image from "next/image";
 import Loading from "components/Loading";
 import { FiEdit } from "react-icons/fi";
 import Link from "next/link";
+import FourOhFour from "components/404";
 
 const ProfilePage = ({ error, userId }) => {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState();
   const { user } = useUser();
-  useEffect(() => {
-    if (error) {
-      router.replace("/404");
-    }
-  }, [error]);
   useEffect(() => {
     const getUserInfo = async () => {
       const userInf = await fetch("/api/getUser", {
@@ -32,6 +28,9 @@ const ProfilePage = ({ error, userId }) => {
       getUserInfo();
     }
   }, [userId]);
+  if (error) {
+    return <FourOhFour />;
+  }
   if (!userId || !userInfo) {
     return <Loading />;
   }
@@ -48,16 +47,22 @@ const ProfilePage = ({ error, userId }) => {
         <h1 className={"text-primary-900 font-bold text-xl mt-4"}>
           @{userInfo.displayName}
         </h1>
-        <button
-          className={
-            "my-6 gradient-button text-white text-xl font-bold px-8 py-5 rounded-lg"
-          }
-        >
-          View {userInfo.displayName}'s ✨Sticky Note Wall✨
-        </button>
+        <Link href={`/walls/${userInfo.displayName}`}>
+          <a
+            className={
+              "my-6 gradient-button text-white text-xl font-bold px-8 py-5 rounded-lg"
+            }
+          >
+            View {userInfo.displayName}'s ✨Sticky Note Wall✨
+          </a>
+        </Link>
         {user && user.uid === userId && (
           <Link href={`/profile/${user.displayName}`}>
-            <a className={"mt-4 flex items-center justify-center gap-2"}>
+            <a
+              className={
+                "mt-4 font-semibold text-gray-500 hover:text-gray-600 flex items-center justify-center gap-2"
+              }
+            >
               <FiEdit />
               Edit your profile
             </a>
