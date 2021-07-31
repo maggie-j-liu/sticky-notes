@@ -46,7 +46,7 @@ export const getStaticProps = async ({ params }) => {
       props: {
         error: true,
       },
-      revalidate: 10,
+      revalidate: 1,
     };
   }
   return {
@@ -56,6 +56,6 @@ export const getStaticProps = async ({ params }) => {
       wallId: userData.walls[0],
       error: false,
     },
-    revalidate: 10,
+    revalidate: 1,
   };
 };

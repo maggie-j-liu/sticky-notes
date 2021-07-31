@@ -39,8 +39,8 @@ const SignIn = () => {
                 walls: [id],
                 username: user.displayName,
               });
-            router.back();
           }
+          router.back();
         };
         processUser();
       },
