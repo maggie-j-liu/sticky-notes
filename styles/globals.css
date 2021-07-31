@@ -9,4 +9,9 @@
       text-decoration: underline;
     }
   }
+  .text-outline {
+    -webkit-text-stroke: currentColor;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-fill-color: transparent;
+  }
 }

@@ -15,26 +15,29 @@ const SignIn = () => {
       },
     ],
     callbacks: {
-      signInSuccessWithAuthResult: async ({ user, additionalUserInfo }) => {
-        console.log(user);
-        console.log(additionalUserInfo);
-        if (additionalUserInfo.isNewUser) {
-          const db = firebase.firestore();
-          const id = await db
-            .collection("walls")
-            .add({
-              messages: [],
-            })
-            .then((doc) => doc.id);
-          await db
-            .collection("users")
-            .doc(user.uid)
-            .set({
-              walls: [id],
-              username: user.displayName,
-            });
-        }
-        router.back();
+      signInSuccessWithAuthResult: ({ user, additionalUserInfo }) => {
+        const processUser = async () => {
+          //console.log(user);
+          //console.log(additionalUserInfo);
+          if (additionalUserInfo.isNewUser) {
+            const db = firebase.firestore();
+            const id = await db
+              .collection("walls")
+              .add({
+                messages: [],
+              })
+              .then((doc) => doc.id);
+            await db
+              .collection("users")
+              .doc(user.uid)
+              .set({
+                walls: [id],
+                username: user.displayName,
+              });
+            router.back();
+          }
+        };
+        processUser();
       },
     },
   };

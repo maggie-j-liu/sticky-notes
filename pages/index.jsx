@@ -7,7 +7,9 @@ const Home = () => {
   const { user, logout } = useUser();
   return (
     <div>
-      <h1 className={"text-5xl font-bold text-primary-800"}>Sticky Notes</h1>
+      <h1 className={"text-5xl font-bold text-primary-800"}>
+        Sticky Note Wall
+      </h1>
     </div>
   );
 };
