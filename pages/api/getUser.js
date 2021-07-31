@@ -20,6 +20,7 @@ const handler = async (req, res) => {
     filteredInfo[field] = userInfo[field];
   }
   res.status(200).json(filteredInfo);
+  return;
 };
 
 export default handler;
