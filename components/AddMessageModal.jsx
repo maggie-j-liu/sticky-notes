@@ -8,6 +8,7 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
   const { user } = useUser();
   const router = useRouter();
   const addMessage = async () => {
+    console.log(addedMessage);
     const db = firebase.firestore();
     await db
       .collection("walls")
@@ -62,20 +63,20 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
               <div className="inline-block w-full max-w-4xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                 <Dialog.Title
                   as="h3"
-                  className="text-xl font-medium leading-6 text-gray-900"
+                  className="text-xl font-semibold leading-6 text-primary-900"
                 >
-                  Add Message
+                  Add Sticky Note
                 </Dialog.Title>
                 <div className="mt-2">
                   <p className="text-lg text-gray-500">
-                    Add a message to {username}'s sticky note wall!
+                    Add a sticky note to {username}'s sticky note wall!
                   </p>
 
                   <textarea
                     value={addedMessage}
                     onChange={(e) => setAddedMessage(e.target.value)}
                     className={
-                      "form-textarea w-full rounded-md border-gray-300 h-48"
+                      "mt-4 form-textarea w-full rounded-md border-gray-300 h-48 focus:border-primary-600 focus:ring-primary-600"
                     }
                     placeholder="Write your message..."
                   />
@@ -83,7 +84,7 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
                 <div className="flex justify-between items-center mt-4">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-4 py-2 font-medium text-primary-900 bg-primary-100 border border-transparent rounded-md hover:bg-primary-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-50-500"
+                    className="inline-flex justify-center px-4 py-2 font-medium text-primary-900 bg-primary-100 border border-transparent rounded-md hover:bg-primary-200 focus:bg-primary-200 focus-ring"
                     onClick={() => {
                       setAddedMessage("");
                       onClose();
@@ -97,7 +98,7 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
                       addMessage();
                     }}
                     className={
-                      "font-medium text-primary-700 bg-primary-200 px-4 py-2 rounded-md hover:text-primary-50 hover:bg-primary-700"
+                      "font-medium text-primary-700 bg-primary-200 px-4 py-2 rounded-md hover:text-primary-50 hover:bg-primary-700 focus:text-primary-50 focus:bg-primary-700 focus-ring"
                     }
                   >
                     Submit

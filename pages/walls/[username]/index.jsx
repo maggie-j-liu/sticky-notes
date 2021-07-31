@@ -16,10 +16,10 @@ const UserPage = ({ username, userId, wallId, error }) => {
     return <Loading />;
   }
   return (
-    <div>
+    <div className={"bg-primary-50"}>
       <h1
         className={
-          "font-bold text-7xl text-primary-900 text-center max-w-2xl mx-auto mt-28"
+          "font-bold text-7xl text-primary-900 text-center max-w-2xl mx-auto pt-28 leading-tight"
         }
       >
         {username}'s <span className={"text-outline"}>Sticky Note Wall</span>
