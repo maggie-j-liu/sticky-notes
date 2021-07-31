@@ -8,7 +8,11 @@ const StickyNoteGrid = ({ notes = [] }) => {
       }
     >
       {sorted.map((note, idx) => (
-        <StickyNote key={idx} text={note.message} />
+        <StickyNote
+          key={idx}
+          text={note.message}
+          className={`${note.backgroundColor} ${note.textColor}`}
+        />
       ))}
     </div>
   );

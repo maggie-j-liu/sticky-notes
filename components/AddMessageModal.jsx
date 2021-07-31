@@ -1,13 +1,32 @@
-import { Transition, Dialog } from "@headlessui/react";
+import { Transition, Dialog, RadioGroup } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import firebase from "utils/firebase";
 import useUser from "utils/useUser";
+
+const backgroundColors = [
+  "bg-indigo-600",
+  "bg-sky-500",
+  "bg-yellow-200",
+  "bg-fuchsia-400",
+];
+
+const textColors = [
+  "text-white",
+  "text-gray-900",
+  "text-gray-900",
+  "text-gray-900",
+];
+
 const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
   const [addedMessage, setAddedMessage] = useState("");
+  const [colorIdx, setColorIdx] = useState(0);
   const { user } = useUser();
   const router = useRouter();
   const addMessage = async () => {
+    if (addedMessage === "") {
+      return;
+    }
     const db = firebase.firestore();
     await db
       .collection("walls")
@@ -17,6 +36,8 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
           user: user.uid,
           message: addedMessage,
           timestamp: Date.now(),
+          backgroundColor: backgroundColors[colorIdx],
+          textColor: textColors[colorIdx],
         }),
       });
     onClose();
@@ -30,7 +51,7 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
           className="fixed inset-0 z-10 overflow-y-auto"
           onClose={onClose}
         >
-          <div className="min-h-screen px-4 text-center">
+          <div className="min-h-screen px-8 text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -59,10 +80,10 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-full max-w-4xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+              <div className="inline-block w-full max-w-4xl px-10 py-8 my-10 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                 <Dialog.Title
                   as="h3"
-                  className="text-xl font-semibold leading-6 text-primary-900"
+                  className="text-2xl font-semibold leading-6 text-primary-900"
                 >
                   Add Sticky Note
                 </Dialog.Title>
@@ -70,15 +91,68 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
                   <p className="text-lg text-gray-500">
                     Add a sticky note to {username}'s sticky note wall!
                   </p>
-
-                  <textarea
-                    value={addedMessage}
-                    onChange={(e) => setAddedMessage(e.target.value)}
-                    className={
-                      "mt-4 form-textarea w-full rounded-md border-gray-300 h-48 focus:border-primary-600 focus:ring-primary-600"
-                    }
-                    placeholder="Write your message..."
-                  />
+                  <label>
+                    <h4
+                      className={
+                        "mt-4 text-xl font-medium wavy text-primary-900"
+                      }
+                    >
+                      Message
+                    </h4>
+                    <textarea
+                      value={addedMessage}
+                      onChange={(e) => setAddedMessage(e.target.value)}
+                      className={
+                        "mt-4 form-textarea w-full rounded-md border-gray-300 h-48 focus:border-primary-600 focus:ring-primary-600"
+                      }
+                      placeholder="Write your message..."
+                    />
+                  </label>
+                  <RadioGroup
+                    value={colorIdx}
+                    onChange={setColorIdx}
+                    className={"mt-4"}
+                  >
+                    <RadioGroup.Label
+                      className={"text-xl font-medium wavy text-primary-900"}
+                    >
+                      Sticky note color
+                    </RadioGroup.Label>
+                    <div className={"flex flex-wrap gap-4 mt-4"}>
+                      {backgroundColors.map((color, idx) => (
+                        <RadioGroup.Option
+                          value={idx}
+                          className={"focus-visible:outline-none"}
+                        >
+                          {({ checked, active }) => (
+                            <div
+                              className={`flex items-center justify-center ${color} h-10 w-10 ${
+                                active
+                                  ? "ring-2 ring-offset-1 ring-offset-white ring-primary-600"
+                                  : ""
+                              }
+                              relative rounded-full shadow-md cursor-pointer flex`}
+                            >
+                              {checked && (
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className={`h-5 w-5 ${textColors[idx]}`}
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              )}
+                            </div>
+                          )}
+                        </RadioGroup.Option>
+                      ))}
+                    </div>
+                  </RadioGroup>
                 </div>
                 <div className="flex justify-between items-center mt-4">
                   <button
@@ -97,8 +171,9 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
                       addMessage();
                     }}
                     className={
-                      "font-medium text-primary-700 bg-primary-200 px-4 py-2 rounded-md hover:text-primary-50 hover:bg-primary-700 focus:text-primary-50 focus:bg-primary-700 focus-ring"
+                      "disabled:bg-gray-300 disabled:text-gray-700 disabled:cursor-not-allowed font-medium text-primary-700 bg-primary-200 px-4 py-2 rounded-md hover:text-primary-50 hover:bg-primary-700 focus:text-primary-50 focus:bg-primary-700 focus-ring"
                     }
+                    disabled={addedMessage === ""}
                   >
                     Submit
                   </button>

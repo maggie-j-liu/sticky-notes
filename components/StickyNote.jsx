@@ -1,4 +1,4 @@
-const StickyNote = ({ text }) => {
+const StickyNote = ({ text, className }) => {
   const colors = [
     "bg-primary-100",
     "bg-primary-200",
@@ -7,9 +7,7 @@ const StickyNote = ({ text }) => {
   ];
   return (
     <div
-      className={`${
-        colors[Math.floor(Math.random() * colors.length)]
-      } rounded-lg py-4 px-6 shadow-xl whitespace-pre-wrap`}
+      className={`rounded-lg py-4 px-6 shadow-xl whitespace-pre-wrap ${className}`}
     >
       {text}
     </div>
