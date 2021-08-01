@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FiPlusCircle } from "react-icons/fi";
+import useUser from "utils/useUser";
 const WallGrid = ({ walls, canAddNew = false }) => {
+  const { user } = useUser();
   return (
     <div
       className={
@@ -9,13 +11,15 @@ const WallGrid = ({ walls, canAddNew = false }) => {
       }
     >
       {canAddNew && (
-        <button
-          className={
-            "hover:wavy text-primary-700 font-semibold text-xl py-10 bg-white rounded-md shadow-sm hover:shadow-xl transition duration-200 flex items-center justify-center gap-4 group"
-          }
-        >
-          <FiPlusCircle /> Add New
-        </button>
+        <Link href={`/new/${user.displayName}`}>
+          <a
+            className={
+              "hover:wavy text-primary-700 font-semibold text-xl py-10 bg-white rounded-md shadow-sm hover:shadow-xl transition duration-200 flex items-center justify-center gap-4 group"
+            }
+          >
+            <FiPlusCircle /> Add New
+          </a>
+        </Link>
       )}
       {walls.map((wall) => (
         <Link key={wall.id} href={`/walls/${wall.username}/${wall.name}`}>

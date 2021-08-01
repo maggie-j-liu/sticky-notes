@@ -78,7 +78,7 @@ const ProfilePage = ({ error, userId, walls }) => {
         >
           {userInfo.displayName}'s Sticky Note Walls
         </h2>
-        <WallGrid walls={walls} canAddNew />
+        <WallGrid walls={walls} canAddNew={user && user.uid === userId} />
       </div>
     </div>
   );
