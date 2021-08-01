@@ -77,7 +77,7 @@ const Edit = ({ error, userId }) => {
 
 export const getStaticPaths = () => ({
   paths: [],
-  fallback: true,
+  fallback: "blocking",
 });
 
 export const getStaticProps = async ({ params }) => {
