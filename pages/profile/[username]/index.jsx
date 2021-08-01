@@ -21,7 +21,6 @@ const ProfilePage = ({ error, userId }) => {
           fields: ["photoURL", "displayName"],
         }),
       }).then((res) => res.json());
-      console.log(userInf);
       setUserInfo(userInf);
     };
     if (userId) {

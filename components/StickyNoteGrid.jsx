@@ -1,6 +1,27 @@
+import { useEffect, useState } from "react";
+import firebase from "utils/firebase";
 import StickyNote from "./StickyNote";
 const StickyNoteGrid = ({ notes = [] }) => {
   const sorted = [...notes].sort((a, b) => b.timestamp - a.timestamp);
+  const [userData, setUserData] = useState();
+  useEffect(() => {
+    const getData = async () => {
+      const db = firebase.firestore();
+      const userDocs = {};
+      await db
+        .collection("users")
+        .get()
+        .then((snap) => {
+          snap.forEach((doc) => (userDocs[doc.id] = doc.data()));
+        });
+      setUserData(userDocs);
+    };
+    getData();
+  }, [notes]);
+
+  if (!userData) {
+    return null;
+  }
   return (
     <div
       className={
@@ -11,7 +32,8 @@ const StickyNoteGrid = ({ notes = [] }) => {
         <StickyNote
           key={idx}
           text={note.message}
-          className={`${note.backgroundColor} ${note.textColor}`}
+          className={`${note.backgroundColor} ${note.textColor} ${note.rotation}`}
+          userInfo={userData[note.user]}
         />
       ))}
     </div>

@@ -19,6 +19,16 @@ const textColors = [
   "text-gray-900",
 ];
 
+const rotations = [
+  "rotate-0",
+  "rotate-1",
+  "rotate-2",
+  "rotate-3",
+  "-rotate-1",
+  "-rotate-2",
+  "-rotate-3",
+];
+
 const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
   const [addedMessage, setAddedMessage] = useState("");
   const [colorIdx, setColorIdx] = useState(0);
@@ -39,6 +49,7 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
           timestamp: Date.now(),
           backgroundColor: backgroundColors[colorIdx],
           textColor: textColors[colorIdx],
+          rotation: rotations[Math.floor(Math.random() * rotations.length)],
         }),
       });
     onClose();

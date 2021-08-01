@@ -17,8 +17,8 @@ const SignIn = () => {
     callbacks: {
       signInSuccessWithAuthResult: ({ user, additionalUserInfo }) => {
         const processUser = async () => {
-          console.log(user);
-          console.log(additionalUserInfo);
+          //console.log(user);
+          //console.log(additionalUserInfo);
           if (additionalUserInfo.isNewUser) {
             const db = firebase.firestore();
             const id = await db
@@ -38,6 +38,8 @@ const SignIn = () => {
               .set({
                 walls: [id],
                 username: user.displayName,
+                photo:
+                  user.photoURL || `https://robohash.org/${user.uid}?set=set4`,
               });
           }
           router.back();
