@@ -11,7 +11,6 @@ import firebase from "utils/firebase";
 import WallGrid from "components/WallGrid";
 
 const ProfilePage = ({ error, userId, walls }) => {
-  console.log(walls);
   const router = useRouter();
   const [userInfo, setUserInfo] = useState();
   const { user } = useUser();
@@ -72,10 +71,14 @@ const ProfilePage = ({ error, userId, walls }) => {
         )}
       </div>
       <div className={"bg-gray-100 py-20 mt-16"}>
-        <h2 className={"text-center font-bold text-primary-900 text-2xl"}>
+        <h2
+          className={
+            "text-center font-bold text-primary-900 text-2xl wavy mb-6"
+          }
+        >
           {userInfo.displayName}'s Sticky Note Walls
         </h2>
-        <WallGrid walls={walls} />
+        <WallGrid walls={walls} canAddNew />
       </div>
     </div>
   );

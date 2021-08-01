@@ -4,14 +4,13 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import userExists from "utils/userExists";
 import Link from "next/link";
+import FourOhFour from "components/404";
 
 const UserPage = ({ username, userId, wallId, error }) => {
   const router = useRouter();
-  useEffect(() => {
-    if (error) {
-      router.replace("/404");
-    }
-  }, [error]);
+  if (error) {
+    return <FourOhFour />;
+  }
   if (error || !username) {
     return <Loading />;
   }
