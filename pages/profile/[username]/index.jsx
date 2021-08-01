@@ -57,7 +57,7 @@ const ProfilePage = ({ error, userId }) => {
           </a>
         </Link>
         {user && user.uid === userId && (
-          <Link href={`/profile/${user.displayName}`}>
+          <Link href={`/profile/${user.displayName}/edit`}>
             <a
               className={
                 "mt-4 font-semibold text-gray-500 hover:text-gray-600 flex items-center justify-center gap-2"

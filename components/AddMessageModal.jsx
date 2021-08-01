@@ -103,9 +103,7 @@ const AddMessageModal = ({ onClose, isOpen, username, wallId }) => {
                     <textarea
                       value={addedMessage}
                       onChange={(e) => setAddedMessage(e.target.value)}
-                      className={
-                        "mt-4 form-textarea w-full rounded-md border-gray-300 h-48 focus:border-primary-600 focus:ring-primary-600"
-                      }
+                      className={"mt-4 form-textarea w-full h-48 input-box"}
                       placeholder="Write your message..."
                     />
                   </label>
