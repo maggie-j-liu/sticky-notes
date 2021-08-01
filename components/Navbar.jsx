@@ -9,7 +9,7 @@ const Navbar = () => {
         className={"h-full flex justify-between items-center max-w-6xl mx-auto"}
       >
         <Link href="/">
-          <a className={"font-bold hover:wavy"}>Sticky Note Wall</a>
+          <a className={"font-bold hover:wavy"}>✨ Sticky Note Wall</a>
         </Link>
         <div>
           {user ? (

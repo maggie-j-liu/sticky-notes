@@ -3,6 +3,7 @@ import StickyNoteWall from "components/StickyNoteWall";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import userExists from "utils/userExists";
+import Link from "next/link";
 
 const UserPage = ({ username, userId, wallId, error }) => {
   const router = useRouter();
@@ -21,7 +22,10 @@ const UserPage = ({ username, userId, wallId, error }) => {
           "font-bold text-7xl text-primary-900 text-center max-w-2xl mx-auto pt-28 leading-tight"
         }
       >
-        {username}'s <span className={"text-outline"}>Sticky Note Wall</span>
+        <Link href={`/profile/${username}`}>
+          <a className={"hover:wavy"}>{username}'s</a>
+        </Link>{" "}
+        <span className={"text-outline"}>Sticky Note Wall</span>
       </h1>
       <StickyNoteWall wallId={wallId} username={username} />
     </div>
