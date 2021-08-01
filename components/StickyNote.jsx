@@ -5,7 +5,7 @@ const StickyNote = ({ text, className, userInfo }) => {
   const darkText = className.includes("text-gray-900");
   return (
     <div
-      className={`flex flex-col justify-between gap-8 text-lg rounded-lg py-4 px-6 shadow-xl whitespace-pre-wrap ${className}`}
+      className={`max-h-96 overflow-auto flex flex-col justify-between gap-8 text-lg rounded-lg py-4 px-6 shadow-xl whitespace-pre-wrap ${className}`}
     >
       <p>{text}</p>
       <div className={"flex justify-end"}>
