@@ -9,19 +9,21 @@ const Navbar = () => {
         className={"h-full flex justify-between items-center max-w-6xl mx-auto"}
       >
         <Link href="/">
-          <a className={"font-bold"}>Sticky Note Wall</a>
+          <a className={"font-bold hover:wavy"}>Sticky Note Wall</a>
         </Link>
         <div>
           {user ? (
             <div className={"flex space-x-8"}>
               <Link href={`/profile/${user.displayName}`}>
-                <a>{user.displayName}</a>
+                <a className={"hover:wavy"}>{user.displayName}</a>
               </Link>
-              <button onClick={() => logout()}>Sign Out</button>
+              <button onClick={() => logout()} className={"hover:wavy"}>
+                Sign Out
+              </button>
             </div>
           ) : (
             <Link href="/sign-in">
-              <a>Sign In</a>
+              <a className={"hover:wavy"}>Sign In</a>
             </Link>
           )}
         </div>

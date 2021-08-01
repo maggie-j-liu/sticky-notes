@@ -25,6 +25,8 @@ const SignIn = () => {
               .collection("walls")
               .add({
                 messages: [],
+                creator: user.uid,
+                name: "",
               })
               .then((doc) => doc.id);
             if (!user.photoURL) {

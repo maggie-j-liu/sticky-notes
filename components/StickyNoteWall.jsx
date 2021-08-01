@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import firebase from "utils/firebase";
 import useUser from "utils/useUser";
 import AddMessageModal from "./AddMessageModal";
-import NotSignedIn from "./NotSignedIn";
 import StickyNoteGrid from "./StickyNoteGrid";
+import Link from "next/link";
 const StickyNoteWall = ({ wallId, username }) => {
   const [messages, setMessages] = useState([]);
   const { user } = useUser();
@@ -50,7 +50,18 @@ const StickyNoteWall = ({ wallId, username }) => {
           />
         </div>
       ) : (
-        <NotSignedIn message={"to add a sticky note"} />
+        <div className={"flex justify-center items-center"}>
+          <Link href={"/sign-in"}>
+            <a
+              onClick={openModal}
+              className={
+                "gradient-button mt-10 mb-2 rounded-md px-6 py-4 text-white text-lg font-bold block"
+              }
+            >
+              You're not signed in! Sign in to add a sticky note.
+            </a>
+          </Link>
+        </div>
       )}
       <svg
         xmlns="http://www.w3.org/2000/svg"

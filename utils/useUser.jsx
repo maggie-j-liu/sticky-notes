@@ -14,9 +14,6 @@ const useAuth = () => {
     return firebase
       .auth()
       .signOut()
-      .then(() => {
-        router.push("/");
-      })
       .catch((error) => {
         console.error(error);
       });

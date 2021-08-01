@@ -30,6 +30,7 @@ const Edit = ({ error, userId }) => {
     await user.updateProfile({
       displayName: username,
     });
+    setUsername("");
     router.replace(`/profile/${username}/edit`);
   };
   if (error) {
