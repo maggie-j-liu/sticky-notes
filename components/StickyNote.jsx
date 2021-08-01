@@ -20,6 +20,7 @@ const StickyNote = ({ text, className, userInfo }) => {
               width={36}
               height={36}
               className={"rounded-full"}
+              alt={`${userInfo.username}'s profile picture`}
             />
             @{userInfo.username}
           </a>
