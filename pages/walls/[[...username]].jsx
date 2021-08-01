@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import userExists from "utils/userExists";
 import Link from "next/link";
 import FourOhFour from "components/404";
+import firebase from "utils/firebase";
 
 const UserPage = ({ username, userId, wallId, error }) => {
   const router = useRouter();
@@ -39,12 +40,43 @@ export const getStaticPaths = () => ({
 });
 
 export const getStaticProps = async ({ params }) => {
+  const path = params.username;
+  if (!params.username || (path.length !== 1 && path.length !== 2)) {
+    return {
+      props: {
+        error: true,
+      },
+    };
+  }
+  const username = path[0];
+  const wallName = path.length === 1 ? "" : path[1];
   const {
     exists: inRegisteredUsers,
     userId,
     userData,
-  } = await userExists(params.username);
+  } = await userExists(username);
   if (!inRegisteredUsers) {
+    return {
+      props: {
+        error: true,
+      },
+      revalidate: 1,
+    };
+  }
+  const db = firebase.firestore();
+  let userWallId;
+  await db
+    .collection("walls")
+    .get()
+    .then((snap) => {
+      snap.forEach((doc) => {
+        const data = doc.data();
+        if (data.creator === userId && data.name === wallName) {
+          userWallId = doc.id;
+        }
+      });
+    });
+  if (!userWallId) {
     return {
       props: {
         error: true,
@@ -54,9 +86,9 @@ export const getStaticProps = async ({ params }) => {
   }
   return {
     props: {
-      username: params.username,
+      username: username,
       userId,
-      wallId: userData.walls[0],
+      wallId: userWallId,
       error: false,
     },
     revalidate: 1,
