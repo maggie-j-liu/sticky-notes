@@ -5,6 +5,7 @@ import SignIn from "components/SignIn";
 import ReactTypingEffect from "react-typing-effect";
 import Link from "next/link";
 import firebase from "utils/firebase";
+import WallGrid from "components/WallGrid";
 
 const Home = ({ walls }) => {
   const { user, logout } = useUser();
@@ -74,36 +75,7 @@ const Home = ({ walls }) => {
         >
           View walls
         </h3>
-        <div
-          className={
-            "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 px-12"
-          }
-        >
-          {Object.entries(walls).map(([id, value]) => (
-            <Link key={id} href={`/walls/${value.username}/${value.name}`}>
-              <a
-                className={
-                  "hover:wavy text-primary-700 font-semibold text-xl py-10 bg-white rounded-md shadow-sm hover:shadow-xl transition duration-200 flex items-center justify-center gap-4 group"
-                }
-              >
-                <div
-                  className={
-                    "border-2 w-10 h-10 relative border-primary-300 rounded-full overflow-hidden"
-                  }
-                >
-                  <Image
-                    src={value.photo}
-                    alt={`${value.username}'s profile picture`}
-                    layout={"fill"}
-                  />
-                </div>
-                {value.name
-                  ? `${value.username}/${value.name}`
-                  : value.username}
-              </a>
-            </Link>
-          ))}
-        </div>
+        <WallGrid walls={walls} />
       </div>
     </div>
   );
@@ -139,16 +111,17 @@ export const getServerSideProps = async () => {
         };
       })
     );
-  const wallUserMap = {};
+  const wallArray = [];
   for (const [wallId, value] of Object.entries(walls)) {
-    wallUserMap[wallId] = {
+    wallArray.push({
+      id: wallId,
       ...users[value.creator],
       name: value.name,
-    };
+    });
   }
   return {
     props: {
-      walls: wallUserMap,
+      walls: wallArray,
     },
   };
 };

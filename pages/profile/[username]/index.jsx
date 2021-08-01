@@ -7,8 +7,11 @@ import Loading from "components/Loading";
 import { FiEdit } from "react-icons/fi";
 import Link from "next/link";
 import FourOhFour from "components/404";
+import firebase from "utils/firebase";
+import WallGrid from "components/WallGrid";
 
-const ProfilePage = ({ error, userId }) => {
+const ProfilePage = ({ error, userId, walls }) => {
+  console.log(walls);
   const router = useRouter();
   const [userInfo, setUserInfo] = useState();
   const { user } = useUser();
@@ -68,6 +71,12 @@ const ProfilePage = ({ error, userId }) => {
           </Link>
         )}
       </div>
+      <div className={"bg-gray-100 py-20 mt-16"}>
+        <h2 className={"text-center font-bold text-primary-900 text-2xl"}>
+          {userInfo.displayName}'s Sticky Note Walls
+        </h2>
+        <WallGrid walls={walls} />
+      </div>
     </div>
   );
 };
@@ -87,10 +96,36 @@ export const getStaticProps = async ({ params }) => {
       revalidate: 1,
     };
   }
+  const db = firebase.firestore();
+  const wallIds = await db
+    .collection("users")
+    .doc(userId)
+    .get()
+    .then((doc) => doc.data().walls);
+  //console.log(wallIds);
+  const walls = [];
+  await db
+    .collection("walls")
+    .get()
+    .then((snap) =>
+      snap.forEach((doc) => {
+        if (wallIds.includes(doc.id)) {
+          const data = doc.data();
+          walls.push({
+            id: doc.id,
+            name: data.name,
+            creator: data.creator,
+            username: userData.username,
+            photo: userData.photo,
+          });
+        }
+      })
+    );
   return {
     props: {
       error: false,
       userId,
+      walls,
     },
     revalidate: 1,
   };
