@@ -7,7 +7,6 @@ import Link from "next/link";
 import firebase from "utils/firebase";
 
 const Home = ({ walls }) => {
-  console.log(walls);
   const { user, logout } = useUser();
   return (
     <div className={"bg-gray-100"}>
