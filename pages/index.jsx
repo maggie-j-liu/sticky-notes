@@ -81,9 +81,8 @@ const Home = ({ walls }) => {
           }
         >
           {Object.entries(walls).map(([id, value]) => (
-            <Link href={`/walls/${value.username}/${value.name}`}>
+            <Link key={id} href={`/walls/${value.username}/${value.name}`}>
               <a
-                key={id}
                 className={
                   "hover:wavy text-primary-700 font-semibold text-xl py-10 bg-white rounded-md shadow-sm hover:shadow-xl transition duration-200 flex items-center justify-center gap-4 group"
                 }
@@ -93,7 +92,11 @@ const Home = ({ walls }) => {
                     "border-2 w-10 h-10 relative border-primary-300 rounded-full overflow-hidden"
                   }
                 >
-                  <Image src={value.photo} layout={"fill"} />
+                  <Image
+                    src={value.photo}
+                    alt={`${value.username}'s profile picture`}
+                    layout={"fill"}
+                  />
                 </div>
                 {value.name
                   ? `${value.username}/${value.name}`
