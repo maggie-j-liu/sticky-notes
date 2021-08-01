@@ -1,9 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FiPlusCircle } from "react-icons/fi";
-import useUser from "utils/useUser";
 const WallGrid = ({ walls, canAddNew = false }) => {
-  const { user } = useUser();
   return (
     <div
       className={
@@ -11,7 +9,7 @@ const WallGrid = ({ walls, canAddNew = false }) => {
       }
     >
       {canAddNew && (
-        <Link href={`/new/${user.displayName}`}>
+        <Link href={"/new"}>
           <a
             className={
               "hover:wavy text-primary-700 font-semibold text-xl py-10 bg-white rounded-md shadow-sm hover:shadow-xl transition duration-200 flex items-center justify-center gap-4 group"

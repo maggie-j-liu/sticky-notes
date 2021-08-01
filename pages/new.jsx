@@ -1,14 +1,10 @@
-import Loading from "components/Loading";
-import StickyNoteWall from "components/StickyNoteWall";
-import router, { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import userExists from "utils/userExists";
-import Link from "next/link";
-import FourOhFour from "components/404";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import useUser from "utils/useUser";
 import firebase from "utils/firebase";
+import NotSignedIn from "components/NotSignedIn";
 
-const CreateNew = ({ username, userId, error }) => {
+const CreateNew = () => {
   const [wallName, setWallName] = useState("");
   const { user } = useUser();
   const router = useRouter();
@@ -19,27 +15,21 @@ const CreateNew = ({ username, userId, error }) => {
       .collection("walls")
       .add({
         messages: [],
-        creator: userId,
+        creator: user.uid,
         name: wallName,
       })
       .then((doc) => doc.id);
     await db
       .collection("users")
-      .doc(userId)
+      .doc(user.uid)
       .update({
         walls: firebase.firestore.FieldValue.arrayUnion(wallId),
       });
     setWallName("");
-    router.push(`walls/${username}/${wallName}`);
+    router.push(`walls/${user.displayName}/${wallName}`);
   };
-  if (error) {
-    return <FourOhFour />;
-  }
-  if (!userId || !user) {
-    return <Loading />;
-  }
-  if (userId !== user.uid) {
-    return <FourOhFour />;
+  if (!user) {
+    return <NotSignedIn message={"to create a new sticky note wall!"} />;
   }
   return (
     <div className={"bg-primary-50 min-h-screen"}>
@@ -76,32 +66,3 @@ const CreateNew = ({ username, userId, error }) => {
 };
 
 export default CreateNew;
-
-export const getStaticPaths = () => ({
-  paths: [],
-  fallback: "blocking",
-});
-
-export const getStaticProps = async ({ params }) => {
-  const {
-    exists: inRegisteredUsers,
-    userId,
-    userData,
-  } = await userExists(params.username);
-  if (!inRegisteredUsers) {
-    return {
-      props: {
-        error: true,
-      },
-      revalidate: 1,
-    };
-  }
-  return {
-    props: {
-      username: params.username,
-      userId,
-      error: false,
-    },
-    revalidate: 1,
-  };
-};

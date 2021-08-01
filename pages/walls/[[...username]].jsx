@@ -6,9 +6,9 @@ import userExists from "utils/userExists";
 import Link from "next/link";
 import FourOhFour from "components/404";
 import firebase from "utils/firebase";
+import Image from "next/image";
 
-const UserPage = ({ username, userId, wallId, error }) => {
-  const router = useRouter();
+const UserPage = ({ username, wallId, error, wallName, profilePic }) => {
   if (error) {
     return <FourOhFour />;
   }
@@ -17,16 +17,50 @@ const UserPage = ({ username, userId, wallId, error }) => {
   }
   return (
     <div className={"bg-primary-50"}>
-      <h1
-        className={
-          "font-bold text-7xl text-primary-900 text-center max-w-2xl mx-auto pt-28 leading-tight"
-        }
-      >
-        <Link href={`/profile/${username}`}>
-          <a className={"hover:wavy"}>{username}'s</a>
-        </Link>{" "}
-        <span className={"text-outline"}>Sticky Note Wall</span>
-      </h1>
+      {wallName === "" ? (
+        <h1
+          className={
+            "font-bold text-7xl text-primary-900 text-center max-w-2xl mx-auto pt-28 leading-tight"
+          }
+        >
+          <Link href={`/profile/${username}`}>
+            <a className={"hover:wavy"}>{username}'s</a>
+          </Link>{" "}
+          <span className={"text-outline"}>Sticky Note Wall</span>
+        </h1>
+      ) : (
+        <>
+          <h1
+            className={
+              "text-outline font-bold text-7xl text-primary-900 text-center max-w-2xl mx-auto pt-28 leading-tight"
+            }
+          >
+            {wallName}
+          </h1>
+          <h2
+            className={
+              "text-2xl text-center mx-auto max-w-2xl text-primary-900"
+            }
+          >
+            <Link href={`/profile/${username}`}>
+              <a
+                className={
+                  "hover:wavy font-bold flex items-center justify-center gap-2"
+                }
+              >
+                <Image
+                  src={profilePic}
+                  alt={`${username}'s profile picture`}
+                  height={48}
+                  width={48}
+                  className={"rounded-full"}
+                />
+                @{username}
+              </a>
+            </Link>
+          </h2>
+        </>
+      )}
       <StickyNoteWall wallId={wallId} username={username} />
     </div>
   );
@@ -87,9 +121,10 @@ export const getStaticProps = async ({ params }) => {
   return {
     props: {
       username: username,
-      userId,
       wallId: userWallId,
       error: false,
+      wallName,
+      profilePic: userData.photo,
     },
     revalidate: 1,
   };
