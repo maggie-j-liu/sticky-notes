@@ -10,7 +10,6 @@ const userExists = async (username) => {
       let exists = false;
       let userId, userData;
       snapshot.forEach((doc) => {
-        console.log("doc exists");
         const data = doc.data();
         exists = true;
         userId = doc.id;

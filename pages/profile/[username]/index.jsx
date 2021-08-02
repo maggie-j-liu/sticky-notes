@@ -107,7 +107,6 @@ export const getStaticProps = async ({ params }) => {
     .get()
     .then((snap) =>
       snap.forEach((doc) => {
-        console.log("wallie");
         const data = doc.data();
         walls.push({
           id: doc.id,

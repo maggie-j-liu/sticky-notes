@@ -10,7 +10,7 @@ const StickyNoteGrid = ({ notes = [] }) => {
       const db = firebase.firestore();
       const userDocs = {};
       for (const userInWall of usersInWall) {
-        console.log(userInWall);
+        //console.log(userInWall);
         await db
           .collection("users")
           .doc(userInWall)
@@ -19,7 +19,7 @@ const StickyNoteGrid = ({ notes = [] }) => {
             userDocs[doc.id] = doc.data();
           });
       }
-      console.log(userDocs);
+      //console.log(userDocs);
       setUserData(userDocs);
     };
     getData();
