@@ -96,7 +96,7 @@ export const getStaticProps = async ({ params }) => {
       props: {
         error: true,
       },
-      revalidate: 1,
+      revalidate: 1000 * 60 * 60,
     };
   }
   const db = firebase.firestore();
@@ -130,7 +130,6 @@ export const getStaticProps = async ({ params }) => {
       userId,
       walls,
     },
-    revalidate: 1,
   };
 };
 

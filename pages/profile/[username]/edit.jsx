@@ -88,7 +88,7 @@ export const getStaticProps = async ({ params }) => {
       props: {
         error: true,
       },
-      revalidate: 1,
+      revalidate: 1000 * 60 * 60,
     };
   }
   return {
@@ -96,7 +96,6 @@ export const getStaticProps = async ({ params }) => {
       error: false,
       userId,
     },
-    revalidate: 1,
   };
 };
 

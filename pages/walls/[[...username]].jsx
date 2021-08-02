@@ -94,7 +94,7 @@ export const getStaticProps = async ({ params }) => {
       props: {
         error: true,
       },
-      revalidate: 1,
+      revalidate: 1000 * 60 * 60,
     };
   }
   const db = firebase.firestore();
@@ -115,7 +115,7 @@ export const getStaticProps = async ({ params }) => {
       props: {
         error: true,
       },
-      revalidate: 1,
+      revalidate: 1000 * 60 * 60,
     };
   }
   return {
@@ -126,6 +126,5 @@ export const getStaticProps = async ({ params }) => {
       wallName,
       profilePic: userData.photo,
     },
-    revalidate: 1,
   };
 };
