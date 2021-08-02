@@ -47,7 +47,7 @@ const Home = ({ walls }) => {
             </h2>
           </div>
           <div className={"max-w-2xl"}>
-            <Image src={exampleimage} className={"rotate-2"} />
+            <Image src={exampleimage} className={"rotate-2"} alt="demo image" />
           </div>
         </div>
       </div>
