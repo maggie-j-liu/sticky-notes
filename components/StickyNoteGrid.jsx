@@ -3,23 +3,29 @@ import firebase from "utils/firebase";
 import StickyNote from "./StickyNote";
 const StickyNoteGrid = ({ notes = [] }) => {
   const sorted = [...notes].sort((a, b) => b.timestamp - a.timestamp);
-  const [userData, setUserData] = useState();
+  const usersInWall = [...new Set(notes.map((note) => note.user))];
+  const [userData, setUserData] = useState({});
   useEffect(() => {
     const getData = async () => {
       const db = firebase.firestore();
       const userDocs = {};
-      await db
-        .collection("users")
-        .get()
-        .then((snap) => {
-          snap.forEach((doc) => (userDocs[doc.id] = doc.data()));
-        });
+      for (const userInWall of usersInWall) {
+        console.log(userInWall);
+        await db
+          .collection("users")
+          .doc(userInWall)
+          .get()
+          .then((doc) => {
+            userDocs[doc.id] = doc.data();
+          });
+      }
+      console.log(userDocs);
       setUserData(userDocs);
     };
     getData();
   }, [notes]);
 
-  if (!userData) {
+  if (!Object.keys(userData).length) {
     return null;
   }
   return (

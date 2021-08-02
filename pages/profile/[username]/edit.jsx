@@ -10,15 +10,6 @@ const Edit = ({ error, userId }) => {
   const { user } = useUser();
   const [username, setUsername] = useState("");
   const router = useRouter();
-  /*
-  useEffect(() => {
-    const getData = async () => {
-      const db = firebase.firestore();
-    };
-    if (userId === user.uid) {
-    }
-  }, [userId, user]);
-  */
   const changeUsername = async () => {
     if (!username) {
       return;

@@ -108,6 +108,7 @@ export const getServerSideProps = async () => {
   const users = {};
   await db
     .collection("users")
+    .where("walls", "!=", [])
     .get()
     .then((snap) =>
       snap.forEach((doc) => {

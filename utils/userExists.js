@@ -3,17 +3,18 @@ const userExists = async (username) => {
   const db = firebase.firestore();
   return await db
     .collection("users")
+    .where("username", "==", username)
+    .limit(1)
     .get()
     .then((snapshot) => {
       let exists = false;
       let userId, userData;
       snapshot.forEach((doc) => {
+        console.log("doc exists");
         const data = doc.data();
-        if (username === data.username) {
-          exists = true;
-          userId = doc.id;
-          userData = data;
-        }
+        exists = true;
+        userId = doc.id;
+        userData = data;
       });
       return { exists, userId, userData };
     });

@@ -100,28 +100,22 @@ export const getStaticProps = async ({ params }) => {
     };
   }
   const db = firebase.firestore();
-  const wallIds = await db
-    .collection("users")
-    .doc(userId)
-    .get()
-    .then((doc) => doc.data().walls);
-  //console.log(wallIds);
   const walls = [];
   await db
     .collection("walls")
+    .where("creator", "==", userId)
     .get()
     .then((snap) =>
       snap.forEach((doc) => {
-        if (wallIds.includes(doc.id)) {
-          const data = doc.data();
-          walls.push({
-            id: doc.id,
-            name: data.name,
-            creator: data.creator,
-            username: userData.username,
-            photo: userData.photo,
-          });
-        }
+        console.log("wallie");
+        const data = doc.data();
+        walls.push({
+          id: doc.id,
+          name: data.name,
+          creator: data.creator,
+          username: userData.username,
+          photo: userData.photo,
+        });
       })
     );
   return {

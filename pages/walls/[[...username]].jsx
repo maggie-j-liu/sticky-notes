@@ -101,13 +101,14 @@ export const getStaticProps = async ({ params }) => {
   let userWallId;
   await db
     .collection("walls")
+    .where("creator", "==", userId)
+    .where("name", "==", wallName)
+    .limit(1)
     .get()
     .then((snap) => {
       snap.forEach((doc) => {
-        const data = doc.data();
-        if (data.creator === userId && data.name === wallName) {
-          userWallId = doc.id;
-        }
+        console.log("doc");
+        userWallId = doc.id;
       });
     });
   if (!userWallId) {
