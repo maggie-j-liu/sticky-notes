@@ -6,6 +6,7 @@ import ReactTypingEffect from "react-typing-effect";
 import Link from "next/link";
 import firebase from "utils/firebase";
 import WallGrid from "components/WallGrid";
+import exampleimage from "../public/image.png";
 
 const Home = ({ walls }) => {
   const { user, logout } = useUser();
@@ -16,8 +17,12 @@ const Home = ({ walls }) => {
           "h-96 flex flex-col justify-center bg-gradient-to-br from-indigo-200 to-indigo-50"
         }
       >
-        <div className={"mx-auto max-w-5xl w-full flex justify-between px-8"}>
-          <div>
+        <div
+          className={
+            "mx-auto w-full flex justify-between items-center px-8 lg:px-16"
+          }
+        >
+          <div className={"max-w-2xl"}>
             <h1
               className={
                 "text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-fuchsia-500 bg-clip-text text-transparent"
@@ -41,7 +46,9 @@ const Home = ({ walls }) => {
               />
             </h2>
           </div>
-          <div>image</div>
+          <div className={"max-w-2xl"}>
+            <Image src={exampleimage} className={"rotate-2"} />
+          </div>
         </div>
       </div>
       <div className={"mt-12"}>
