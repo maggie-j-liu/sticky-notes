@@ -1,5 +1,6 @@
 import useUser from "utils/useUser";
 import Link from "next/link";
+import { FiGithub } from "react-icons/fi";
 
 const Navbar = () => {
   const { user, logout } = useUser();
@@ -11,21 +12,30 @@ const Navbar = () => {
         <Link href="/">
           <a className={"font-bold hover:wavy"}>✨ Sticky Note Wall</a>
         </Link>
-        <div>
+        <div className={"flex space-x-8 items-center"}>
           {user ? (
-            <div className={"flex space-x-8"}>
+            <>
               <Link href={`/profile/${user.displayName}`}>
                 <a className={"hover:wavy"}>{user.displayName}</a>
               </Link>
               <button onClick={() => logout()} className={"hover:wavy"}>
                 Sign Out
               </button>
-            </div>
+            </>
           ) : (
             <Link href="/sign-in">
               <a className={"hover:wavy"}>Sign In</a>
             </Link>
           )}
+          <Link href="https://github.com/maggie-j-liu/sticky-notes">
+            <a
+              className={
+                "hover:text-primary-700 hover:bg-gray-50 p-2 rounded-full group"
+              }
+            >
+              <FiGithub className={"h-6 w-6 group-hover:scale-105"} />
+            </a>
+          </Link>
         </div>
       </div>
     </nav>
