@@ -8,8 +8,8 @@ import { FiMail } from "react-icons/fi";
 import userExists from "utils/userExists";
 
 const processUser = async ({ additionalUserInfo, user }, newUsername) => {
+  const db = firebase.firestore();
   if (additionalUserInfo.isNewUser) {
-    const db = firebase.firestore();
     const id = await db
       .collection("walls")
       .add({
@@ -58,6 +58,25 @@ const processUser = async ({ additionalUserInfo, user }, newUsername) => {
         username: user.displayName,
         photo: user.photoURL || `https://robohash.org/${user.uid}?set=set4`,
       });
+  } else {
+    // user might exist but signed in with email first
+    const existed = await db
+      .collection("users")
+      .doc(user.uid)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          const data = doc.data();
+          return { photo: data.photo, username: data.username };
+        }
+        return false;
+      });
+    if (existed) {
+      await user.updateProfile({
+        photoURL: existed.photo,
+        displayName: existed.username,
+      });
+    }
   }
 };
 
@@ -107,7 +126,6 @@ const SignIn = () => {
       method: "POST",
       body: JSON.stringify({ email }),
     }).then((res) => res.json());
-    console.log(info.exists);
     setNewUser(!info.exists);
     setCanUseEmail(!info.otherAccount);
   };
@@ -120,7 +138,6 @@ const SignIn = () => {
     const regex =
       /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
     setEmailValid(regex.test(email));
-    console.log(regex.test(email));
   };
 
   const validateUsername = async () => {
