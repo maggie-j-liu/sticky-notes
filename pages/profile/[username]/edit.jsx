@@ -9,9 +9,10 @@ import { useRouter } from "next/router";
 const Edit = ({ error, userId }) => {
   const { user } = useUser();
   const [username, setUsername] = useState("");
+  const [alreadyUsed, setAlreadyUsed] = useState(false);
   const router = useRouter();
   const changeUsername = async () => {
-    if (!username) {
+    if (!username || alreadyUsed) {
       return;
     }
     const db = firebase.firestore();
@@ -24,6 +25,10 @@ const Edit = ({ error, userId }) => {
     setUsername("");
     router.replace(`/profile/${username}/edit`);
   };
+  const validateUsername = async () => {
+    const { exists } = await userExists(username, false);
+    setAlreadyUsed(exists);
+  }
   if (error) {
     return <FourOhFour />;
   }
@@ -47,18 +52,21 @@ const Edit = ({ error, userId }) => {
           <p>Username</p>
           <input
             type="text"
-            className={"form-input input-box"}
+            className={`form-input input-box ${alreadyUsed ? 'focus:!ring-red-400 !border-red-400 !ring-offset-red-400' : ""}`}
             placeholder={user.displayName}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            onBlur={() => validateUsername()}
           />
+          {alreadyUsed && <p className={'text-red-400 text-sm'}>This username is not available</p>}
         </label>
         <button
           type="button"
           onClick={() => changeUsername()}
           className={
-            "bg-primary-700 hover:bg-primary-600 mt-4 text-white font-semibold px-4 py-2 rounded-lg"
+            "bg-primary-700 hover:bg-primary-600 mt-4 text-white font-semibold px-4 py-2 rounded-lg disabled:cursor-not-allowed disabled:bg-gray-400 disabled:hover:bg-gray-400"
           }
+          disabled={!username || alreadyUsed}
         >
           Change Username
         </button>
