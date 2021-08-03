@@ -24,29 +24,37 @@ const processUser = async ({ additionalUserInfo, user }, newUsername) => {
       // logged in with google
       // need to check if username has been used already
       const MAX_TRIES = 5;
-      if (userExists(user.displayName, false).exists) {
+      // if the username already exists
+      if ((await userExists(user.displayName, false)).exists) {
+        // try to get a new name by appending a random number
         for (let i = 0; i < MAX_TRIES; i++) {
           const newName =
             user.displayName +
             "-" +
             Math.floor(Math.random() * 10000).toString();
-          if (!userExists(newName, false).exists) {
+          if (!(await userExists(newName, false)).exists) {
             needsUpdateName = true;
             updatedName = newName;
             break;
           }
         }
-      }
-      if (!needsUpdateName) {
-        // rip, hopefully never happens
-        needsUpdateName = true;
-        updatedName = user.uid;
+        if (!needsUpdateName) {
+          // rip, hopefully never happens
+          needsUpdateName = true;
+          updatedName = user.uid;
+        }
       }
     }
-    if (!user.photoURL || !user.displayName || needsUpdateName) {
-      const nameToUpdateTo = newUsername || updatedName;
+    // if the user doesn't have a photo (email sign in)
+    if (!user.photoURL) {
       await user.updateProfile({
         photoURL: `https://robohash.org/${user.uid}?set=set4`,
+      });
+    }
+    // if the user doesn't have a displayName (email sign in or duplicate)
+    if (!user.displayName || needsUpdateName) {
+      const nameToUpdateTo = newUsername || updatedName;
+      await user.updateProfile({
         displayName: nameToUpdateTo,
       });
     }
